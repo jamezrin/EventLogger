@@ -1,0 +1,4 @@
+name: EventLogger
+main: me.jaime29010.eventlogger.bungee.Main
+version: 1.0
+author: [jaime29010]

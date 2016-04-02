@@ -1,0 +1,6 @@
+# It must be a chest! We can use this chest as a buffer and then use hoppers to move the items to other chests
+Storage:
+  world: world
+  x: 5
+  y: 5
+  z: 5

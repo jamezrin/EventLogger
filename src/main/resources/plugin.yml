@@ -1,0 +1,7 @@
+name: EventLogger
+main: me.jaime29010.eventlogger.bukkit.Main
+version: 1.0
+author: [jaime29010]
+commands:
+  sb:
+    description: 'Broadcast a message to moderators (only from console)'
