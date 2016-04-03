@@ -31,17 +31,16 @@ public class SignSpyCommand extends Command {
                         break;
                     }
                     case "help": {
-                        player.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&',
+                        player.sendMessage(new TextComponent(main.color(
                                 "&b/signspy, /ss &7-&r Toggle SignSpy notifications on or off\n" +
-                                "&b/signspy <message>, /ss <message> &7-&r Send a SignSpy notification to everyone with SignSpy notification permission\n" +
-                                "&b/sb <message> &7-&r Reload the SignSpy configuration (&conly works from console&r)\n" +
+                                "&b/signspy <message>, /ss <message> &7-&r Send a SignSpy notification to everyone with SignSpy notifications enabled\n" +
                                 "&b/signspy <reload>, /ss <reload> &7-&r Reload the SignSpy configuration")));
                         break;
                     }
                     default: {
                         if (player.hasPermission("signspy.message")) {
                             String message = StringUtils.join(args, ' ');
-                            main.broadcast(new TextComponent(message));
+                            main.broadcast(message);
                             player.sendMessage(main.getConfigMessage("MessageSentConfirmation"));
                         } else {
                             player.sendMessage(new ComponentBuilder("You don't have enough permissions to execute this command").color(ChatColor.RED).create());

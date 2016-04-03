@@ -33,7 +33,7 @@ public class PluginMessageListener implements Listener {
                 case "LogSignEditEvent": {
                     String json = in.readUTF();
                     SignData data = main.getGson().fromJson(json, SignData.class);
-                    String message = ChatColor.translateAlternateColorCodes('&',
+                    String message = main.color(
                             main.getConfig().getString("SignEditMessage")
                                     .replace("%player%", player.getName())
                                     .replace("%server%", server.getName())
@@ -43,14 +43,14 @@ public class PluginMessageListener implements Listener {
                                     .replace("%line2%", data.getLines() [1])
                                     .replace("%line3%", data.getLines() [2])
                                     .replace("%line4%", data.getLines() [3]));
-                    main.broadcast(new TextComponent(message));
+                    main.broadcast(message);
                     main.log(ChatColor.stripColor(message));
                     break;
                 }
                 case "LogItemRenameEvent": {
                     String json = in.readUTF();
                     RenameData data = main.getGson().fromJson(json, RenameData.class);
-                    String message = ChatColor.translateAlternateColorCodes('&',
+                    String message = main.color(
                             main.getConfig().getString("ItemRenameMessage")
                                     .replace("%player%", player.getName())
                                     .replace("%server%", server.getName())
@@ -58,14 +58,14 @@ public class PluginMessageListener implements Listener {
                                     .replace("%playerxyz%", data.getLocation().toString())
                                     .replace("%type%", data.getTypeCaps())
                                     .replace("%name%", data.getName()));
-                    main.broadcast(new TextComponent(message));
+                    main.broadcast(message);
                     main.log(ChatColor.stripColor(message));
                     break;
                 }
                 case "LogBookEditEvent": {
                     String json = in.readUTF();
                     BookData data = main.getGson().fromJson(json, BookData.class);
-                    String message = ChatColor.translateAlternateColorCodes('&',
+                    String message = main.color(
                             main.getConfig().getString("BookEditMessage")
                                     .replace("%player%", player.getName())
                                     .replace("%server%", server.getName())
@@ -73,23 +73,24 @@ public class PluginMessageListener implements Listener {
                                     .replace("%playerworld%", data.getLocation().getWorld())
                                     .replace("%chestxyz%", data.getChestLocation().toString())
                                     .replace("%chestworld%", data.getChestLocation().getWorld()));
-                    main.broadcast(new TextComponent(message));
+                    main.broadcast(message);
                     StringBuilder builder = new StringBuilder(ChatColor.stripColor(message));
                     int page = 1;
                     for (String string : data.getPages()) {
                         builder.append("\n");
                         builder.append("Page ");
-                        builder.append(page);
+                        builder.append(page++);
+                        builder.append(":");
                         builder.append("\n");
                         builder.append(ChatColor.stripColor(string));
+                        builder.append("\n");
                     }
                     main.log(builder.toString());
                     break;
                 }
                 case "BroadcastMessage": {
                     String message = in.readUTF();
-                    main.broadcast(new TextComponent(ChatColor.translateAlternateColorCodes('&',
-                            message)));
+                    main.broadcast(main.color(message));
                     break;
                 }
             }

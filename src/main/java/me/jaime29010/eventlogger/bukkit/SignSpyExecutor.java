@@ -34,7 +34,7 @@ public class SignSpyExecutor implements CommandExecutor {
                 }
                 player.sendPluginMessage(main, "EventLogger", out.toByteArray());
             } else {
-                sender.sendMessage("Usage for this command: /sb <message>");
+                sender.sendMessage("Usage for this command: /signspy <message>");
             }
         }
         return true;

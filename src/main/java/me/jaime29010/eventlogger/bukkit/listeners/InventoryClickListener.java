@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class InventoryClickListener implements Listener {
     private final Main main;
@@ -20,9 +21,25 @@ public class InventoryClickListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         if (event.isCancelled()) return;
         if (event.getClickedInventory() instanceof AnvilInventory && event.getSlot() == 2) {
-            ItemStack item = event.getCurrentItem();
-            if (item.getType() == Material.AIR) return;
-            main.sendRenameEvent(player, item.getType().name(), item.getItemMeta().getDisplayName());
+            ItemStack result = event.getCurrentItem();
+            ItemStack item = event.getClickedInventory().getItem(0);
+            if (result.getType() == Material.AIR) return;
+            if (hasDifferentName(item, result)) {
+                main.sendRenameEvent(player, result.getType().name(), result.getItemMeta().getDisplayName());
+            }
         }
+    }
+
+    private boolean hasDifferentName(ItemStack item1, ItemStack item2) {
+        String name1 = String.valueOf(getCustomName(item1));
+        String name2 = String.valueOf(getCustomName(item2));
+        return !name1.equals(name2);
+    }
+
+    private String getCustomName(ItemStack item) {
+        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
+            return item.getItemMeta().getDisplayName();
+        }
+        return null;
     }
 }

@@ -44,7 +44,7 @@ public class Main extends JavaPlugin {
             getLogger().severe("The location specified in the config is not a chest, we will not store the copies of the books");
         }
 
-        getCommand("sb").setExecutor(new SignSpyExecutor(this));
+        getCommand("signspy").setExecutor(new SignSpyExecutor(this));
         getServer().getPluginManager().registerEvents(new InventoryClickListener(this), this);
         getServer().getPluginManager().registerEvents(new SignChangeListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerEditBookListener(this), this);

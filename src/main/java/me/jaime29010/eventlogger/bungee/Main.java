@@ -61,18 +61,22 @@ public class Main extends Plugin {
         return config;
     }
 
-    public void broadcast(TextComponent component) {
+    public void broadcast(String message) {
         for (Map.Entry<UUID, Boolean> entry : storage.entrySet()) {
             if (entry.getValue()) {
                 ProxiedPlayer player = getProxy().getPlayer(entry.getKey());
                 if (player == null) return;
-                player.sendMessage(component);
+                player.sendMessage(new TextComponent(message));
             }
         }
     }
 
     public TextComponent getConfigMessage(String path) {
-        return new TextComponent(ChatColor.translateAlternateColorCodes('&', config.getString(path)));
+        return new TextComponent(color(config.getString(path)));
+    }
+
+    public String color(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
     }
 
     public void reloadConfig() {
