@@ -30,7 +30,7 @@ public class PlayerEditBookListener implements Listener {
                     meta.setTitle("Unsigned Book");
                 }
                 item.setItemMeta(meta);
-                main.getStorage().addItem(item);
+                main.getStorage().getInventory().addItem(item);
             }
         }
         main.sendBookEvent(player, meta);

@@ -12,55 +12,55 @@ import me.jaime29010.eventlogger.shared.RenameData;
 import me.jaime29010.eventlogger.shared.SignData;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     private final Gson gson = new Gson();
-    private Inventory storage;
-    private Location location;
+    private Chest storage;
     private FileConfiguration config;
     @Override
     public void onEnable() {
         config = ConfigurationManager.loadConfig("bukkitconfig.yml", this);
         getServer().getMessenger().registerOutgoingPluginChannel(this, "EventLogger");
 
-        location = new Location(
-                getServer().getWorld(config.getString("Storage.world")),
-                config.getInt("Storage.x"),
-                config.getInt("Storage.y"),
-                config.getInt("Storage.z"));
-        Block block = location.getBlock();
-        if (block.getState() instanceof Chest) {
-            Chest chest = (Chest) block.getState();
-            storage = chest.getInventory();
+        World world = getServer().getWorld(config.getString("Storage.world"));
+        if (world != null) {
+            Block block = world.getBlockAt(
+                    config.getInt("Storage.x"),
+                    config.getInt("Storage.y"),
+                    config.getInt("Storage.z")
+            );
+            if (block != null) {
+                if (block.getState() instanceof Chest) {
+                    storage = (Chest) block.getState();
+                } else {
+                    getLogger().severe("The location specified in the config is not a chest, we will not store the copies of the books");
+                }
+            } else {
+                getLogger().severe("The location specified in the config is not a chest, we will not store the copies of the books");
+            }
         } else {
-            getLogger().severe("The location specified in the config is not a chest, we will not store the copies of the books");
+            getLogger().severe("The world specified in the config does not exist, we will not store the copies of the books");
         }
-
         getCommand("signspy").setExecutor(new SignSpyExecutor(this));
         getServer().getPluginManager().registerEvents(new InventoryClickListener(this), this);
         getServer().getPluginManager().registerEvents(new SignChangeListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerEditBookListener(this), this);
     }
 
-    public Inventory getStorage() {
+    public Chest getStorage() {
         return storage;
     }
 
     @Override
     public FileConfiguration getConfig() {
         return config;
-    }
-
-    public Gson getGson() {
-        return gson;
     }
 
     public TextComponent getConfigMessage(String path) {
@@ -103,10 +103,10 @@ public class Main extends JavaPlugin {
                 player.getLocation().getBlockY(),
                 player.getLocation().getBlockZ()
         ), meta.getTitle(), meta.getAuthor(), meta.getPages(), new LocationData(
-                location.getWorld().getName(),
-                location.getBlockX(),
-                location.getBlockY(),
-                location.getBlockZ())));
+                storage.getWorld().getName(),
+                storage.getLocation().getBlockX(),
+                storage.getLocation().getBlockY(),
+                storage.getLocation().getBlockZ())));
         out.writeUTF(json);
         player.sendPluginMessage(this, "EventLogger", out.toByteArray());
     }
