@@ -6,7 +6,6 @@ import me.jaime29010.eventlogger.shared.BookData;
 import me.jaime29010.eventlogger.shared.RenameData;
 import me.jaime29010.eventlogger.shared.SignData;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
@@ -65,14 +64,13 @@ public class PluginMessageListener implements Listener {
                 case "LogBookEditEvent": {
                     String json = in.readUTF();
                     BookData data = main.getGson().fromJson(json, BookData.class);
-                    String message = main.color(
-                            main.getConfig().getString("BookEditMessage")
-                                    .replace("%player%", player.getName())
-                                    .replace("%server%", server.getName())
-                                    .replace("%playerxyz%", data.getLocation().toString())
-                                    .replace("%playerworld%", data.getLocation().getWorld())
-                                    .replace("%chestxyz%", data.getChestLocation().toString())
-                                    .replace("%chestworld%", data.getChestLocation().getWorld()));
+                    String message = main.color(main.getConfig().getString("BookEditMessage")
+                            .replace("%player%", player.getName())
+                            .replace("%server%", server.getName())
+                            .replace("%playerxyz%", data.getLocation().toString())
+                            .replace("%playerworld%", data.getLocation().getWorld())
+                            .replace("%chestxyz%", data.getChestLocation() != null ? data.getChestLocation().toString() : "*Not set*")
+                            .replace("%chestworld%", data.getChestLocation() != null ? data.getChestLocation().getWorld() : "*Not set*"));
                     main.broadcast(message);
                     StringBuilder builder = new StringBuilder(ChatColor.stripColor(message));
                     int page = 1;

@@ -25,6 +25,7 @@ public class Main extends Plugin {
     private static final int MAX_LOG_FILES = 10;
     private final Map<UUID, Boolean> storage = new HashMap<>();
     private Configuration config;
+
     @Override
     public void onEnable() {
         config = ConfigurationManager.loadConfig("bungeeconfig.yml", this);

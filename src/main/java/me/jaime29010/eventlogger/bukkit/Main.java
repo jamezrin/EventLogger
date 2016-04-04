@@ -10,8 +10,6 @@ import me.jaime29010.eventlogger.shared.BookData;
 import me.jaime29010.eventlogger.shared.LocationData;
 import me.jaime29010.eventlogger.shared.RenameData;
 import me.jaime29010.eventlogger.shared.SignData;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -23,10 +21,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin {
     private final Gson gson = new Gson();
     private Chest storage;
-    private FileConfiguration config;
+
     @Override
     public void onEnable() {
-        config = ConfigurationManager.loadConfig("bukkitconfig.yml", this);
+        FileConfiguration config = ConfigurationManager.loadConfig("bukkitconfig.yml", this);
         getServer().getMessenger().registerOutgoingPluginChannel(this, "EventLogger");
 
         World world = getServer().getWorld(config.getString("Storage.world"));
@@ -36,12 +34,8 @@ public class Main extends JavaPlugin {
                     config.getInt("Storage.y"),
                     config.getInt("Storage.z")
             );
-            if (block != null) {
-                if (block.getState() instanceof Chest) {
-                    storage = (Chest) block.getState();
-                } else {
-                    getLogger().severe("The location specified in the config is not a chest, we will not store the copies of the books");
-                }
+            if (block != null && block.getState() instanceof Chest) {
+                storage = (Chest) block.getState();
             } else {
                 getLogger().severe("The location specified in the config is not a chest, we will not store the copies of the books");
             }
@@ -56,16 +50,6 @@ public class Main extends JavaPlugin {
 
     public Chest getStorage() {
         return storage;
-    }
-
-    @Override
-    public FileConfiguration getConfig() {
-        return config;
-    }
-
-    public TextComponent getConfigMessage(String path) {
-        return new TextComponent(ChatColor.translateAlternateColorCodes('&',
-                config.getString(path)));
     }
 
     public void sendSignEvent(Player player, String[] lines) {
@@ -102,11 +86,11 @@ public class Main extends JavaPlugin {
                 player.getLocation().getBlockX(),
                 player.getLocation().getBlockY(),
                 player.getLocation().getBlockZ()
-        ), meta.getTitle(), meta.getAuthor(), meta.getPages(), new LocationData(
+        ), meta.getTitle(), meta.getAuthor(), meta.getPages(), storage != null ? new LocationData(
                 storage.getWorld().getName(),
                 storage.getLocation().getBlockX(),
                 storage.getLocation().getBlockY(),
-                storage.getLocation().getBlockZ())));
+                storage.getLocation().getBlockZ()) : null));
         out.writeUTF(json);
         player.sendPluginMessage(this, "EventLogger", out.toByteArray());
     }
