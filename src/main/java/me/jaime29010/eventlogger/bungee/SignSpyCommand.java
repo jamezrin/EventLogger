@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 public class SignSpyCommand extends Command {
     private final Main main;
     public SignSpyCommand(Main main) {
-        super("signspy", "", "ss");
+        super("eventlogger", "", "el");
         this.main = main;
     }
 
@@ -22,7 +22,7 @@ public class SignSpyCommand extends Command {
             if (args.length >= 1) {
                 switch (args[0].toLowerCase()) {
                     case "reload": {
-                        if (player.hasPermission("signspy.reload")) {
+                        if (player.hasPermission("eventlogger.reload")) {
                             main.reloadConfig();
                             player.sendMessage(main.getConfigMessage("ReloadMessage"));
                         } else {
@@ -38,7 +38,7 @@ public class SignSpyCommand extends Command {
                         break;
                     }
                     default: {
-                        if (player.hasPermission("signspy.message")) {
+                        if (player.hasPermission("eventlogger.broadcast")) {
                             String message = StringUtils.join(args, ' ');
                             main.broadcast(message);
                             player.sendMessage(main.getConfigMessage("MessageSentConfirmation"));
@@ -48,7 +48,7 @@ public class SignSpyCommand extends Command {
                     }
                 }
             } else {
-                if (player.hasPermission("signspy.notify")) {
+                if (player.hasPermission("eventlogger.toggle")) {
                     if (main.getStorage().containsKey(player.getUniqueId())) {
                         if (main.getStorage().get(player.getUniqueId())) {
                             main.getStorage().put(player.getUniqueId(), false);

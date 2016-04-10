@@ -1,6 +1,5 @@
 package me.jaime29010.eventlogger.bungee;
 
-import com.google.gson.Gson;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,7 +19,6 @@ import java.util.logging.Logger;
 
 public class Main extends Plugin {
     private Logger logger;
-    private final Gson gson = new Gson();
     private static final int MAX_SIZE_MB = 5;
     private static final int MAX_LOG_FILES = 10;
     private final Map<UUID, Boolean> storage = new HashMap<>();
@@ -30,11 +28,7 @@ public class Main extends Plugin {
     public void onEnable() {
         config = ConfigurationManager.loadConfig("bungeeconfig.yml", this);
         getProxy().registerChannel("EventLogger");
-
-        getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));
-        getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
-        getProxy().getPluginManager().registerCommand(this, new SignSpyCommand(this));
-        logger = Logger.getLogger("Event Log");
+        logger = Logger.getLogger("EventLogger");
         logger.setUseParentHandlers(false);
         try {
             FileHandler handler = new FileHandler(
@@ -52,10 +46,9 @@ public class Main extends Plugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public Gson getGson() {
-        return gson;
+        getProxy().getPluginManager().registerListener(this, new PlayerJoinListener(this));
+        getProxy().getPluginManager().registerListener(this, new PluginMessageListener(this));
+        getProxy().getPluginManager().registerCommand(this, new SignSpyCommand(this));
     }
 
     public Configuration getConfig() {
@@ -66,18 +59,19 @@ public class Main extends Plugin {
         for (Map.Entry<UUID, Boolean> entry : storage.entrySet()) {
             if (entry.getValue()) {
                 ProxiedPlayer player = getProxy().getPlayer(entry.getKey());
-                if (player == null) return;
-                player.sendMessage(new TextComponent(message));
+                if (player != null) {
+                    player.sendMessage(new TextComponent(message));
+                }
             }
         }
     }
 
-    public TextComponent getConfigMessage(String path) {
-        return new TextComponent(color(config.getString(path)));
-    }
-
     public String color(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    public TextComponent getConfigMessage(String path) {
+        return new TextComponent(color(config.getString(path)));
     }
 
     public void reloadConfig() {

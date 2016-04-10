@@ -3,6 +3,6 @@ main: me.jaime29010.eventlogger.bukkit.Main
 version: ${project.version}
 author: [jaime29010]
 commands:
-  signspy:
+  eventlogger:
     description: 'Broadcast a message to moderators (only from console)'
-    aliases: [ss, sb]
+    aliases: [el]

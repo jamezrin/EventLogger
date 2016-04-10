@@ -4,7 +4,7 @@ ItemRenameMessage: "&9%player%&f in %server% (%playerworld%) named an item at %p
 BookEditMessage: "&9%player%&f in %server% (%playerworld%) wrote a book at %playerxyz%.\nThe book has been copied to the chest at %chestxyz% (%chestworld%)"
 
 # Feedback messages
-SignSpyOnMessage: '&7SignSpy notifications enabled.'
-SignSpyOffMessage: '&7SignSpy notifications disabled.'
-ReloadMessage: '&9The SignSpy configuration has been reloaded.'
+SignSpyOnMessage: '&7EventLogger notifications enabled.'
+SignSpyOffMessage: '&7EventLogger notifications disabled.'
+ReloadMessage: '&9The EventLogger configuration has been reloaded.'
 MessageSentConfirmation: '&9Your message has been sent.'

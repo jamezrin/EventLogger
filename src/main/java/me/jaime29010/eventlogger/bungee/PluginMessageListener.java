@@ -2,6 +2,7 @@ package me.jaime29010.eventlogger.bungee;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.Gson;
 import me.jaime29010.eventlogger.shared.BookData;
 import me.jaime29010.eventlogger.shared.RenameData;
 import me.jaime29010.eventlogger.shared.SignData;
@@ -15,6 +16,7 @@ import net.md_5.bungee.event.EventHandler;
 
 public class PluginMessageListener implements Listener {
     private final Main main;
+    private final Gson gson = new Gson();
     public PluginMessageListener(Main main) {
         this.main = main;
     }
@@ -31,7 +33,7 @@ public class PluginMessageListener implements Listener {
             switch (request) {
                 case "LogSignEditEvent": {
                     String json = in.readUTF();
-                    SignData data = main.getGson().fromJson(json, SignData.class);
+                    SignData data = gson.fromJson(json, SignData.class);
                     String message = main.color(
                             main.getConfig().getString("SignEditMessage")
                                     .replace("%player%", player.getName())
@@ -48,7 +50,7 @@ public class PluginMessageListener implements Listener {
                 }
                 case "LogItemRenameEvent": {
                     String json = in.readUTF();
-                    RenameData data = main.getGson().fromJson(json, RenameData.class);
+                    RenameData data = gson.fromJson(json, RenameData.class);
                     String message = main.color(
                             main.getConfig().getString("ItemRenameMessage")
                                     .replace("%player%", player.getName())
@@ -63,7 +65,7 @@ public class PluginMessageListener implements Listener {
                 }
                 case "LogBookEditEvent": {
                     String json = in.readUTF();
-                    BookData data = main.getGson().fromJson(json, BookData.class);
+                    BookData data = gson.fromJson(json, BookData.class);
                     String message = main.color(main.getConfig().getString("BookEditMessage")
                             .replace("%player%", player.getName())
                             .replace("%server%", server.getName())
@@ -88,8 +90,12 @@ public class PluginMessageListener implements Listener {
                 }
                 case "BroadcastMessage": {
                     String message = in.readUTF();
-                    main.broadcast(main.color(message));
+                    main.broadcast(message);
                     break;
+                }
+
+                default: {
+                    main.getLogger().severe("Received unexpected data from a plugin message");
                 }
             }
         }

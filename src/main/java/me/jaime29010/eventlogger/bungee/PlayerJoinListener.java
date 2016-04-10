@@ -14,7 +14,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPostLogin(PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
-        if (player.hasPermission("signspy.notify")) {
+        if (player.hasPermission("eventlogger.toggle")) {
             if (main.getStorage().containsKey(player.getUniqueId())) return;
             main.getStorage().put(player.getUniqueId(), true);
         }
