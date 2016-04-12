@@ -10,6 +10,7 @@ import me.jaime29010.eventlogger.shared.BookData;
 import me.jaime29010.eventlogger.shared.LocationData;
 import me.jaime29010.eventlogger.shared.RenameData;
 import me.jaime29010.eventlogger.shared.SignData;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -29,11 +30,15 @@ public class Main extends JavaPlugin {
         ConfigurationSection section = config.getConfigurationSection("Storage");
         World world = getServer().getWorld(section.getString("world"));
         if (world != null) {
-            Block block = world.getBlockAt(
-                    section.getInt("x"),
-                    section.getInt("y"),
-                    section.getInt("z")
-            );
+            int x = section.getInt("x");
+            int y = section.getInt("y");
+            int z = section.getInt("z");
+
+            //Not sure if needed?
+            Chunk chunk = world.getChunkAt(x, z);
+            chunk.load();
+
+            Block block = world.getBlockAt(x, y, z);
             if (block != null && block.getState() instanceof Chest) {
                 storage = (Chest) block.getState();
             } else {

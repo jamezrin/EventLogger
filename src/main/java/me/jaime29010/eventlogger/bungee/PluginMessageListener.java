@@ -90,7 +90,7 @@ public class PluginMessageListener implements Listener {
                 }
                 case "BroadcastMessage": {
                     String message = in.readUTF();
-                    main.broadcast(message);
+                    main.broadcast(main.color(message));
                     break;
                 }
 
