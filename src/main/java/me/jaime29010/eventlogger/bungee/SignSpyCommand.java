@@ -40,7 +40,7 @@ public class SignSpyCommand extends Command {
                     default: {
                         if (player.hasPermission("eventlogger.broadcast")) {
                             String message = StringUtils.join(args, ' ');
-                            main.broadcast(message);
+                            main.broadcast(main.color(message));
                             player.sendMessage(main.getConfigMessage("MessageSentConfirmation"));
                         } else {
                             player.sendMessage(new ComponentBuilder("You don't have enough permissions to execute this command").color(ChatColor.RED).create());
