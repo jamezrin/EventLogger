@@ -15,6 +15,19 @@ public class SignChangeListener implements Listener {
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
-        main.sendSignEvent(player, event.getLines());
+        if (main.getBukkitConfig().getBoolean("CheckEmptySigns")) {
+            if (hasText(event.getLines())) {
+                main.sendSignEvent(player, event.getLines());
+            }
+        } else {
+            main.sendSignEvent(player, event.getLines());
+        }
+    }
+
+    private boolean hasText(String[] lines) {
+        return (lines[0].matches(".*\\w.*") ||
+                lines[1].matches(".*\\w.*") ||
+                lines[2].matches(".*\\w.*") ||
+                lines[3].matches(".*\\w.*"));
     }
 }

@@ -22,10 +22,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     private final Gson gson = new Gson();
+    private FileConfiguration config;
     private Chest storage;
     @Override
     public void onEnable() {
-        FileConfiguration config = ConfigurationManager.loadConfig("bukkitconfig.yml", this);
+        config = ConfigurationManager.loadConfig("bukkitconfig.yml", this);
         getServer().getMessenger().registerOutgoingPluginChannel(this, "EventLogger");
         ConfigurationSection section = config.getConfigurationSection("Storage");
         World world = getServer().getWorld(section.getString("world"));
@@ -98,5 +99,9 @@ public class Main extends JavaPlugin {
                 storage.getLocation().getBlockZ()) : null));
         out.writeUTF(json);
         player.sendPluginMessage(this, "EventLogger", out.toByteArray());
+    }
+
+    public FileConfiguration getBukkitConfig() {
+        return config;
     }
 }

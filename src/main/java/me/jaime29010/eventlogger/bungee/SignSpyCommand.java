@@ -24,7 +24,7 @@ public class SignSpyCommand extends Command {
                     case "reload": {
                         if (player.hasPermission("eventlogger.reload")) {
                             main.reloadConfig();
-                            player.sendMessage(main.getConfigMessage("ReloadMessage"));
+                            player.sendMessage(main.getComponentMessage("ReloadMessage"));
                         } else {
                             player.sendMessage(new ComponentBuilder("You don't have enough permissions to execute this command").color(ChatColor.RED).create());
                         }
@@ -41,7 +41,7 @@ public class SignSpyCommand extends Command {
                         if (player.hasPermission("eventlogger.broadcast")) {
                             String message = StringUtils.join(args, ' ');
                             main.broadcast(main.color(message));
-                            player.sendMessage(main.getConfigMessage("MessageSentConfirmation"));
+                            player.sendMessage(main.getComponentMessage("MessageSentConfirmation"));
                         } else {
                             player.sendMessage(new ComponentBuilder("You don't have enough permissions to execute this command").color(ChatColor.RED).create());
                         }
@@ -52,14 +52,14 @@ public class SignSpyCommand extends Command {
                     if (main.getStorage().containsKey(player.getUniqueId())) {
                         if (main.getStorage().get(player.getUniqueId())) {
                             main.getStorage().put(player.getUniqueId(), false);
-                            player.sendMessage(main.getConfigMessage("SignSpyOffMessage"));
+                            player.sendMessage(main.getComponentMessage("SignSpyOffMessage"));
                         } else {
                             main.getStorage().put(player.getUniqueId(), true);
-                            player.sendMessage(main.getConfigMessage("SignSpyOnMessage"));
+                            player.sendMessage(main.getComponentMessage("SignSpyOnMessage"));
                         }
                     } else {
                         main.getStorage().put(player.getUniqueId(), true);
-                        player.sendMessage(main.getConfigMessage("SignSpyOnMessage"));
+                        player.sendMessage(main.getComponentMessage("SignSpyOnMessage"));
                     }
                 } else {
                     player.sendMessage(new ComponentBuilder("You don't have enough permissions to execute this command").color(ChatColor.RED).create());

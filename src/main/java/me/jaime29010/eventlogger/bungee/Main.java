@@ -56,13 +56,11 @@ public class Main extends Plugin {
     }
 
     public void broadcast(String message) {
+        TextComponent component = new TextComponent(TextComponent.fromLegacyText(message));
         for (Map.Entry<UUID, Boolean> entry : storage.entrySet()) {
-            if (entry.getValue()) {
-                ProxiedPlayer player = getProxy().getPlayer(entry.getKey());
-                if (player != null) {
-                    player.sendMessage(new TextComponent(message));
-                }
-            }
+            ProxiedPlayer player = getProxy().getPlayer(entry.getKey());
+            if (player == null || !entry.getValue()) continue;
+            player.sendMessage(component);
         }
     }
 
@@ -70,7 +68,7 @@ public class Main extends Plugin {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
 
-    public TextComponent getConfigMessage(String path) {
+    public TextComponent getComponentMessage(String path) {
         return new TextComponent(color(config.getString(path)));
     }
 

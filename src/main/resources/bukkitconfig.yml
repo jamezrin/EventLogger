@@ -4,3 +4,6 @@ Storage:
   x: 5
   y: 5
   z: 5
+
+# Pretty self explanatory
+CheckEmptySigns: true
