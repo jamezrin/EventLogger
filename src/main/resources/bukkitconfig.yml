@@ -6,4 +6,4 @@ Storage:
   z: 5
 
 # Pretty self explanatory
-CheckEmptySigns: true
+IgnoreEmptySigns: true
